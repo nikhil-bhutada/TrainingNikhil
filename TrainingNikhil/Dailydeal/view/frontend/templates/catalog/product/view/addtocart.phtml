@@ -1,0 +1,108 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php $_product = $block->getProduct();?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php if ($_product->isSaleable()): ?>
+<div class="box-tocart">
+          <div class="dailydeal">
+          <?php 
+          if ($_product->getResource()->getAttribute('dailydeal_enable')->getFrontend()->getValue($_product) == 'Yes') {
+           // print_r("<br>product_dailydeal_end_date : ".$_product->getResource()->getAttribute('product_dailydeal_end_date')->getFrontend()->getValue($_product));
+           ?>
+           <span id="time"></span>
+           <?php
+// $currenttime = strtotime(date("h:i:s A"));
+// $cutofftime = strtotime(date('h:i:s A', strtotime(date('d-m-Y') . ' + 16 hours')));
+           $productDailydealEndDate = strtotime($_product->getResource()->getAttribute('product_dailydeal_end_date')->getFrontend()->getValue($_product));
+  $currenttime = strtotime(date("h:i:s A"));
+ $deliverydate = date('d-m-Y', strtotime(date('d-m-Y') . ' + 2 weekdays'));
+
+$interval = date('H:i:s', mktime(0, 0, $productDailydealEndDate-$currenttime));
+
+?>
+
+<script>
+function startTimer(duration, display) {
+    var timer = duration, hours, minutes, seconds;
+    setInterval(function () {
+        hours = parseInt(timer / 60, 10)
+        minutes = parseInt(timer % 60, 10)
+        seconds = parseInt(timer % 60, 10);
+
+        var total_seconds = timer;
+var d = Math.floor(total_seconds / (3600*24));
+var h = Math.floor(total_seconds % (3600*24) / 3600);
+var m = Math.floor(total_seconds % 3600 / 60);
+var s = Math.floor(total_seconds % 3600 % 60);
+
+var dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
+var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+// return dDisplay + hDisplay + mDisplay + sDisplay;
+
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = "Daily Deal"+ dDisplay + hDisplay + mDisplay + sDisplay;
+
+        if (--timer < 0) {
+            timer = duration;
+        }
+    }, 1000);
+}
+
+window.onload = function () {
+    var time = <?php echo $productDailydealEndDate-$currenttime; ?>,
+        display = document.querySelector('#time');
+    startTimer(time, display);
+};
+</script>
+           <?php
+          }
+          ?>
+        </div>
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()): ?>
+        <div class="field qty">
+            <label class="label" for="qty"><span><?= /* @escapeNotVerified */ __('Qty') ?></span></label>
+            <div class="control">
+                <input type="number"
+                       name="qty"
+                       id="qty"
+                       value="<?= /* @escapeNotVerified */ $block->getProductDefaultQty() * 1 ?>"
+                       title="<?= /* @escapeNotVerified */ __('Qty') ?>"
+                       class="input-text qty"
+                       data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                       />
+            </div>
+        </div>
+        <?php endif; ?>
+        <div class="actions">
+            <button type="submit"
+                    title="<?= /* @escapeNotVerified */ $buttonTitle ?>"
+                    class="action primary tocart"
+                    id="product-addtocart-button">
+                <span><?= /* @escapeNotVerified */ $buttonTitle ?></span>
+            </button>
+            <?= $block->getChildHtml('', true) ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>
