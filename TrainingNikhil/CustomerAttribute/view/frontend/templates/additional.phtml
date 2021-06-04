@@ -1,0 +1,25 @@
+<?php
+$fatherStatus = $this->helper('TrainingNikhil\CustomerAttribute\Helper\Data')->getConfig('customer/create_account/fathername');
+if($fatherStatus == 1){?>
+  <div class="field fathername">
+    <label class="label" for="fathername">
+      <span><?= $block->escapeHtml(__('Father Name')) ?></span>
+    </label>
+    <div class="control">
+       <input type="text" name="fathername" id="fathername" value="" title="<?= $block->escapeHtmlAttr(__('Father Name')) ?>" class="input-text">
+    </div>
+</div>
+<?php } ?>
+
+<?php
+$motherStatus = $this->helper('TrainingNikhil\CustomerAttribute\Helper\Data')->getConfig('customer/create_account/mothername');
+if($motherStatus == 1){?>
+<div class="field mothername">
+    <label class="label" for="mothername">
+      <span><?= $block->escapeHtml(__('Mother Name')) ?></span>
+    </label>
+    <div class="control">
+       <input type="text" name="mothername" id="mothername" value="" title="<?= $block->escapeHtmlAttr(__('Mother Name')) ?>" class="input-text">
+    </div>
+</div>
+<?php } ?>
