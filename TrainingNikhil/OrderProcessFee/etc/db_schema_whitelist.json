@@ -1,0 +1,12 @@
+{
+    "quote": {
+        "column": {
+            "customfee": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "customfee": true
+        }
+    }
+}

@@ -1,0 +1,12 @@
+s<?php
+<!--  $status = $this->helper('TrainingNikhil\OrderProcessFee\Helper\Data')->getConfig('sales/order_fees/additional_fee_status');
+
+if($status == 1){ -->
+?>
+<tr class="totals fee excl">
+    <th class="mark" colspan="1" scope="row" data-bind="text: title"></th>
+    <td class="amount">
+        <span class="price" data-bind="text: getValue()"></span>
+    </td>
+</tr>
+<!-- <?php } ?> -->
